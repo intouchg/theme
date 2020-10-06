@@ -1,6 +1,6 @@
 import { createUuid, randomHexColor, makeAvailableName } from '@i/utility'
-import { themeSpec, themeTypePropertyMap } from './themeSpec'
-import type { Theme, ThemeValue, ThemeComponent, ThemeGroup, ThemeProperty, StyleProperty } from './themeSpec'
+import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './themeSpec'
+import type { Theme, ThemeValue, ThemeComponent, ThemeVariant, ThemeGroup, ThemeProperty, StyleProperty } from './themeSpec'
 
 export const getThemePropertyByStyleProperty = (styleProperty: StyleProperty): ThemeProperty | undefined => {
     const entry = Object.entries(themeSpec).find(([ themeProperty, styleProperties ]) => 
@@ -32,20 +32,23 @@ const sortAscending = (values: any[]) =>
 
 /**
  * @function themeProcessor
- * @description Converts ThemeValues, ThemeGroups, and ThemeComponents into a
- *      Theme, to be used with `styled-components` `ThemeProvider`
- * @param {ThemeValue[]} themeValues Array of ThemeValue objects
- * @param {ThemeGroup[]} themeGroups Array of ThemeGroup objects
- * @param {ThemeComponent[]} themeComponents Array of ThemeComponent objects
+ * @description Converts ThemeValues, ThemeGroups, ThemeComponents, and ThemeVariants
+ *      into a Theme, to be used with `styled-components` `ThemeProvider`
+ * @param {ThemeValue[]} values Array of ThemeValue objects
+ * @param {ThemeGroup[]} groups Array of ThemeGroup objects
+ * @param {ThemeComponent[]} components Array of ThemeComponent objects
+ * @param {ThemeVariant[]} variants Array of ThemeVariant objects
  */
 export const themeProcessor = ({
     values,
     groups,
     components,
+    variants,
 }: {
     values: ThemeValue[]
     groups: ThemeGroup[]
     components: ThemeComponent[]
+    variants: ThemeVariant[]
 }): Theme => {
     if (!values || values.length === 0) throw new Error(`ThemeValues were not passed to the themeProcessor`)
 
@@ -72,11 +75,24 @@ export const themeProcessor = ({
     if (components) {
         components.forEach(({ name, styles }) => {
             Object.entries(styles).forEach(([ styleProperty, themeValueId ]) => {
-                if (themeValueId === "") return
+                if (themeValueId === '') return
                 const themeProperty = getThemePropertyByStyleProperty(styleProperty as StyleProperty)
                 if (!themeProperty) throw new Error(`Could not find matching ThemeProperty for StyleProperty "${styleProperty}" in ThemeComponent "${name}"`)
                 const themeValue = values.find((value) => value.id === themeValueId)
                 if (!themeValue) throw new Error(`Could not find ThemeValue with id "${themeValueId}" for StyleProperty "${styleProperty}" in ThemeComponent "${name}"`)
+                if (!theme[themeProperty]) theme[themeProperty] = {} as any
+                assignThemeValue(theme[themeProperty]!, name, { id: 'COMPONENT_STYLE', name: styleProperty, value: themeValue.value })
+            })
+        })
+    }
+
+    if (variants) {
+        variants.forEach(({ variantType, name, styles }) => {
+            Object.entries(styles).forEach(([ styleProperty, themeValueId ]) => {
+                if (themeValueId === '') return
+                const themeProperty = componentVariantsPropertyMap[variantType]
+                const themeValue = values.find((value) => value.id === themeValueId)
+                if (!themeValue) throw new Error(`Could not find ThemeValue with id "${themeValueId}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
                 if (!theme[themeProperty]) theme[themeProperty] = {} as any
                 assignThemeValue(theme[themeProperty]!, name, { id: 'COMPONENT_STYLE', name: styleProperty, value: themeValue.value })
             })
@@ -102,7 +118,6 @@ const THEME_VALUE_INITIAL_DEFAULTS = {
     radius: () => ({ value: '8px', name: 'New Radius' }),
     shadow: () => ({ value: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)', name: 'New Shadow' }),
     zIndex: () => ({ value: 10 }),
-    grid: () => ({ value: '', name: 'New Grid' }),
 }
 
 /**
@@ -185,4 +200,38 @@ export const createThemeGroup = <T extends ThemeGroup['groupType']>(
     newGroup.name = makeAvailableName(newGroup.name, unavailableNames)
 
     return newGroup
+}
+
+/**
+ * @function createThemeVariant
+ * @description Creates a new ThemeVariant of the given variantType. Ensures the
+ *      created ThemeVariant has a unique name amongst other ThemeVariants of
+ *      its variantType.
+ * @param {ThemeVariant[]} themeVariants Array of ThemeVariant objects
+ * @param {ThemeVariant['variantType']} type ThemeVariant type to create
+ * @param {Partial<ThemeVariant>} props ThemeVariant props to use
+ */
+export const createThemeVariant = <T extends ThemeVariant['variantType']>(
+    themeVariants: ThemeVariant[],
+    variantType: T,
+    props: Partial<ThemeVariant> = {},
+): ThemeVariant => {
+    const newVariant = {
+        type: 'variant' as const,
+        id: props.id || createUuid(),
+        variantType,
+        name: props.name || 'New Variant',
+        styles: props.styles || {},
+    }
+
+    let unavailableNames: string[] = []
+    themeVariants.forEach((variant) => {
+        if (variant.variantType === variantType) {
+            unavailableNames.push(variant.name)
+        }
+    })
+
+    newVariant.name = makeAvailableName(newVariant.name, unavailableNames)
+
+    return newVariant
 }

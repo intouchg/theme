@@ -13,7 +13,7 @@ export const IDSCONFIG_FILENAME = '.idsconfig'
  *      use default styles from the theme.
  */
 export const componentNames = [
-    'button', 'text', 'heading', 'link', 'icon',
+    'button', 'text', 'heading', 'link', 'icon', 'input',
 ] as const
 
 /**
@@ -72,6 +72,7 @@ export const themeSpec = {
         'paddingLeft', 'pl',
         'paddingX', 'px',
         'paddingY', 'py',
+        'gridGap', 'gridColumnGap', 'gridRowGap',
     ],
     fontSizes: [
         'fontSize',
@@ -102,9 +103,6 @@ export const themeSpec = {
         'minWidth', 'minHeight',
         'maxWidth', 'maxHeight',
         'size',
-    ],
-    grid: [
-        'gridGap', 'gridColumnGap', 'gridRowGap',
     ],
     borders: [
         'border',
@@ -162,7 +160,20 @@ export const themeTypePropertyMap = {
     radius: 'radii',
     shadow: 'shadows',
     zIndex: 'zIndices',
-    grid: 'grid',
+} as const
+
+/**
+ * @object componentVariantsPropertyMap
+ * @description This object maps string literal types from componentNames[number]
+ *      to theme variant properties.
+ */
+export const componentVariantsPropertyMap = {
+    button: 'buttons',
+    text: 'texts',
+    heading: 'headings',
+    link: 'links',
+    icon: 'icons',
+    input: 'inputs',
 } as const
 
 export type ThemeProperty = keyof typeof themeSpec
@@ -268,13 +279,6 @@ export type ThemeZIndex = {
     value: number
 }
 
-export type ThemeGrid = {
-    type: 'grid'
-    id: string
-    value: string
-    name: string
-}
-
 export type ThemeValueObject =
     ThemeSize
     | ThemeColor
@@ -285,7 +289,6 @@ export type ThemeValueObject =
     | ThemeBorderWidth
     | ThemeRadius
     | ThemeShadow
-    | ThemeGrid
 
 export type ThemeValueArray =
     ThemeBreakpoint
@@ -314,6 +317,16 @@ export type ThemeComponent = {
     }
 }
 
+export type ThemeVariant = {
+    type: 'variant'
+    id: string
+    variantType: keyof typeof componentVariantsPropertyMap
+    name: string
+    styles: {
+        [key in StyleProperty]?: string | number | (string | number)[]
+    }
+}
+
 export type ThemeSnippet = {
     type: 'snippet'
     id: string
@@ -331,11 +344,14 @@ export type Theme = {
     letterSpacings: ThemeLetterSpacing['value'][] 
     colors: { [key in ThemeColor['name']]: ThemeColor['value'] | Theme['colors'] }
     sizes: { [key in ThemeSize['name']]: ThemeSize['value'] }
-    grid: { [key in ThemeGrid['name']]: ThemeGrid['value'] }
     borders: { [key in ThemeBorder['name']]: ThemeBorder['value'] }
     borderWidths: { [key in ThemeBorderWidth['name']]: ThemeBorderWidth['value'] }
     borderStyles: { [key in ThemeBorderStyle['name']]: ThemeBorderStyle['value'] }
     radii: { [key in ThemeRadius['name']]: ThemeRadius['value'] }
     shadows: { [key in ThemeShadow['name']]: ThemeShadow['value'] }
     zIndices: ThemeZIndex['value'][]
+} & {
+    [key in typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]]: {
+        [key in typeof themeSpec[keyof typeof themeSpec][number]]: string | number | (string | number)[]
+    }
 }
