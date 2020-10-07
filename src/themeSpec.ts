@@ -5,7 +5,7 @@
  *      file configures various settings for the Sketch plugin and the
  *      Webpack plugin (and possibly more).
  */
-export const IDSCONFIG_FILENAME = '.idsconfig'
+export const IDSCONFIG_FILENAME = 'idsconfig.js'
 
 /**
  * @object componentNames
