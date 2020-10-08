@@ -23,32 +23,18 @@ export type Config = {
 export const validateConfig = (config: Config) => {
     let isValid = true
 
-    const reportError = (propertyName: string) => console.error(`Property ${propertyName} is not configured in "${configFilename}" config file`)
-
-    if (!config.themeValuesPath) {
-        isValid = false
-        reportError('themeValuesPath')
+    const validate = (propertyName: keyof Config) => {
+        if (!config[propertyName] || typeof config[propertyName] !== 'string') {
+            isValid = false
+            console.error(`Property ${propertyName} is not configured in "${configFilename}" config file`)
+        }
     }
 
-    if (!config.themeGroupsPath) {
-        isValid = false
-        reportError('themeGroupsPath')
-    }
-
-    if (!config.themeComponentsPath) {
-        isValid = false
-        reportError('themeComponentsPath')
-    }
-
-    if (!config.themeVariantsPath) {
-        isValid = false
-        reportError('themeVariantsPath')
-    }
-
-    if (!config.themeOutputPath) {
-        isValid = false
-        reportError('themeOutputPath')
-    }
+    validate('themeValuesPath')
+    validate('themeGroupsPath')
+    validate('themeComponentsPath')
+    validate('themeVariantsPath')
+    validate('themeOutputPath')
 
     if (isValid) {
         return config
