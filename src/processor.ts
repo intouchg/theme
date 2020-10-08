@@ -1,9 +1,9 @@
 import { createUuid, randomHexColor, makeAvailableName } from '@i/utility'
-import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './themeSpec'
-import type { Theme, ThemeValue, ThemeComponent, ThemeVariant, ThemeGroup, ThemeProperty, StyleProperty } from './themeSpec'
+import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './schema'
+import type { Theme, ThemeValue, ThemeComponent, ThemeVariant, ThemeGroup, ThemeProperty, StyleProperty } from './schema'
 
 export const getThemePropertyByStyleProperty = (styleProperty: StyleProperty): ThemeProperty | undefined => {
-    const entry = Object.entries(themeSpec).find(([ themeProperty, styleProperties ]) => 
+    const entry = Object.entries(themeSpec).find(([ , styleProperties ]) => 
         (styleProperties as unknown as string[]).includes(styleProperty))
     return entry ? entry[0] as ThemeProperty : undefined
 }
@@ -26,27 +26,24 @@ const assignThemeValue = (
     }
 }
 
-const sortAscending = (values: any[]) =>
+const sortThemeValuesAscending = (values: any[]) =>
     values.forEach((value) =>
         Array.isArray(value) && value.sort((a: any, b: any) => a - b))
 
 /**
  * @function themeProcessor
- * @description Converts ThemeValues, ThemeGroups, ThemeComponents, and ThemeVariants
+ * @description Converts ThemeValues, ThemeComponents, and ThemeVariants
  *      into a Theme, to be used with `styled-components` `ThemeProvider`
  * @param {ThemeValue[]} values Array of ThemeValue objects
- * @param {ThemeGroup[]} groups Array of ThemeGroup objects
  * @param {ThemeComponent[]} components Array of ThemeComponent objects
  * @param {ThemeVariant[]} variants Array of ThemeVariant objects
  */
 export const themeProcessor = ({
     values,
-    groups,
     components,
     variants,
 }: {
     values: ThemeValue[]
-    groups: ThemeGroup[]
     components: ThemeComponent[]
     variants: ThemeVariant[]
 }): Theme => {
@@ -54,23 +51,12 @@ export const themeProcessor = ({
 
     const theme = {} as Partial<Theme>
 
-    if (groups) {
-        groups.forEach(({ groupType, name, members, id: groupId }) => {
-            const themeProperty = themeTypePropertyMap[groupType]
-            members.forEach((id) => {
-                const member = values.find((value) => value.id === id)
-                if (!member) throw new Error(`Could not find ThemeValue with id "${id}" for ThemeGroup "${groupType}.${name}" with id ${groupId}`)
-                assignThemeValue(theme, themeProperty, member)
-            })
-        })
-    }
-
     values.forEach((value) => {
         const themeProperty = themeTypePropertyMap[value.type]
         assignThemeValue(theme, themeProperty, value)
     })
 
-    Object.values(theme).forEach(property => property && sortAscending(Object.values(property)))
+    Object.values(theme).forEach(property => property && sortThemeValuesAscending(Object.values(property)))
 
     if (components) {
         components.forEach(({ name, styles }) => {
@@ -102,7 +88,7 @@ export const themeProcessor = ({
     return theme as Theme
 }
 
-const THEME_VALUE_INITIAL_DEFAULTS = {
+const themeValueInitialDefaults = {
     breakpoint: () => ({ value: '60em' }),
     size: () => ({ value: '60px', name: 'New Size' }),
     space: () => ({ value: 32 }),
@@ -136,7 +122,7 @@ export const createThemeValue = <T extends ThemeValue['type']>(
 ): ThemeValue & { type: T } => {
     const newValue = {
         id: props.id || createUuid(),
-        ...THEME_VALUE_INITIAL_DEFAULTS[type](),
+        ...themeValueInitialDefaults[type](),
         ...props,
         type,
     } as ThemeValue & { type: T }

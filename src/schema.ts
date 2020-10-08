@@ -1,11 +1,9 @@
 /**
- * @string IDSCONFIG_FILENAME
- * @description The name of the config file that should exist in the
- *      root of any project that uses the Intouch Design System. This
- *      file configures various settings for the Sketch plugin and the
- *      Webpack plugin (and possibly more).
+ * @string defaultVariantName
+ * @description The name of the default variant that will be applied
+ *      to every content component in `@i/components` via defaultProps.
  */
-export const IDSCONFIG_FILENAME = 'idsconfig.js'
+export const defaultVariantName = 'Primary'
 
 /**
  * @object componentNames
@@ -18,10 +16,10 @@ export const componentNames = [
 
 /**
  * @object customThemeProps
- * @description The keys of this object are theme properties, and the value
- *      assigned to each key is an array of custom style properties. Each
- *      custom style property can be applied to `@i/components`, and
- *      can access the values from the corresponding theme property.
+ * @description The keys of this object are theme property names, and the 
+ *      value assigned to each key is an array of custom style property 
+ *      names. Each custom style property can be applied to `@i/components`,
+ *      and can access the values from the corresponding theme property.
  * @example
  * 
  * ```js
@@ -50,9 +48,9 @@ export const customThemeProps = {
 
 /**
  * @object themeSpec
- * @description This object represents all possible theme properties, and
- *      their corresponding style properties. Values from `customThemeProps`
- *      need to be added to this object as well.
+ * @description This object represents all possible theme property names, 
+ *      and their corresponding style property names. Values from 
+ *      `customThemeProps` need to be added to this object as well.
  */
 export const themeSpec = {
     breakpoints: [],
@@ -142,7 +140,7 @@ export const themeSpec = {
 /**
  * @object themeTypePropertyMap
  * @description This object maps string literal types from ThemeValue['type']
- *      to theme properties from (keyof Theme).
+ *      to theme property names from (keyof Theme).
  */
 export const themeTypePropertyMap = {
     breakpoint: 'breakpoints',
@@ -165,7 +163,7 @@ export const themeTypePropertyMap = {
 /**
  * @object componentVariantsPropertyMap
  * @description This object maps string literal types from componentNames[number]
- *      to theme variant properties.
+ *      to theme variant property names.
  */
 export const componentVariantsPropertyMap = {
     button: 'buttons',

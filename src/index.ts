@@ -1,2 +1,3 @@
-export * from './themeSpec'
-export * from './themeProcessor'
+export * from './schema'
+export * from './processor'
+export * from './config'
