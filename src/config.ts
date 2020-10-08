@@ -26,7 +26,7 @@ export const validateConfig = (config: Config) => {
     const validate = (propertyName: keyof Config) => {
         if (!config[propertyName] || typeof config[propertyName] !== 'string') {
             isValid = false
-            console.error(`Property ${propertyName} is not configured in "${configFilename}" config file`)
+            console.error(`Property "${propertyName}" is not configured in "${configFilename}" config file`)
         }
     }
 
@@ -37,7 +37,7 @@ export const validateConfig = (config: Config) => {
     validate('themeOutputPath')
 
     if (isValid) {
-        return config
+        return config as Required<Config>
     }
     
     return false
