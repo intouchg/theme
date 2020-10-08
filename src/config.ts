@@ -7,16 +7,22 @@
  */
 export const configFilename = 'idsconfig.js'
 
+
+/**
+ * @type Config
+ * @description The properties that are expected to be in a valid
+ *      config file. The value of each property should be a filepath.
+ */
 export type Config = {
-    themeValuesPath?: string
-    themeGroupsPath?: string
-    themeComponentsPath?: string
-    themeVariantsPath?: string
-    themeOutputPath?: string
+    values?: string
+    groups?: string
+    components?: string
+    variants?: string
+    output?: string
 }
 
 /**
- * @string validateConfig
+ * @function validateConfig
  * @description Takes an object from a Config file. Returns the
  *      config object if it is valid, or false if it is invalid.
  */
@@ -30,11 +36,11 @@ export const validateConfig = (config: Config) => {
         }
     }
 
-    validate('themeValuesPath')
-    validate('themeGroupsPath')
-    validate('themeComponentsPath')
-    validate('themeVariantsPath')
-    validate('themeOutputPath')
+    validate('values')
+    validate('groups')
+    validate('components')
+    validate('variants')
+    validate('output')
 
     if (isValid) {
         return config as Required<Config>
