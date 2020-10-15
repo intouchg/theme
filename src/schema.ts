@@ -11,7 +11,7 @@ export const defaultVariantName = 'Primary'
  *      use default styles from the theme.
  */
 export const componentNames = [
-    'button', 'text', 'heading', 'link', 'icon', 'input',
+    'button', 'text', 'heading', 'label', 'link', 'icon', 'input',
 ] as const
 
 /**
@@ -169,6 +169,7 @@ export const componentVariantsPropertyMap = {
     button: 'buttons',
     text: 'texts',
     heading: 'headings',
+    label: 'labels',
     link: 'links',
     icon: 'icons',
     input: 'inputs',

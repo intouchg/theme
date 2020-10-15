@@ -91,19 +91,19 @@ export const themeProcessor = ({
 const themeValueInitialDefaults = {
     breakpoint: () => ({ value: '60em' }),
     size: () => ({ value: '60px', name: 'New Size' }),
-    space: () => ({ value: 32 }),
+    space: () => ({ value: '32px' }),
     color: () => ({ value: randomHexColor(), name: 'New Color', groups: [] }),
     font: () => ({ value: 'Times', name: 'New Font' }),
-    fontSize: () => ({ value: 24 }),
-    fontWeight: () => ({ value: 600, name: 'New Font Weight' }),
-    lineHeight: () => ({ value: 1 }),
-    letterSpacing: () => ({ value: 0 }),
+    fontSize: () => ({ value: '1rem' }),
+    fontWeight: () => ({ value: '600', name: 'New Font Weight' }),
+    lineHeight: () => ({ value: '1rem' }),
+    letterSpacing: () => ({ value: '0px' }),
     border: () => ({ value: '2px solid black', name: 'New Border' }),
     borderStyle: () => ({ value: 'solid', name: 'New Border Style' }),
     borderWidth: () => ({ value: '2px', name: 'New Border Width' }),
     radius: () => ({ value: '8px', name: 'New Radius' }),
     shadow: () => ({ value: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)', name: 'New Shadow' }),
-    zIndex: () => ({ value: 10 }),
+    zIndex: () => ({ value: '10' }),
 }
 
 /**
