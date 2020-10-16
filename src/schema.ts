@@ -181,20 +181,20 @@ export type StyleProperty = typeof themeSpec[keyof typeof themeSpec][number]
 export type ThemeBreakpoint = {
     type: 'breakpoint'
     id: string
-    value: string | number
+    value: string
 }
 
 export type ThemeSize = {
     type: 'size'
     id: string
-    value: string | number
+    value: string
     name: string
 }
 
 export type ThemeSpace = {
     type: 'space'
     id: string
-    value: string | number
+    value: string
 }
 
 export type ThemeColor = {
@@ -215,26 +215,26 @@ export type ThemeFont = {
 export type ThemeFontSize = {
     type: 'fontSize'
     id: string
-    value: string | number
+    value: string
 }
 
 export type ThemeFontWeight = {
     type: 'fontWeight'
     id: string
-    value: number
+    value: string
     name: string
 }
 
 export type ThemeLineHeight = {
     type: 'lineHeight'
     id: string
-    value: string | number
+    value: string
 }
 
 export type ThemeLetterSpacing = {
     type: 'letterSpacing'
     id: string
-    value: string | number
+    value: string
 }
 
 export type ThemeBorder = {
@@ -254,7 +254,7 @@ export type ThemeBorderStyle = {
 export type ThemeBorderWidth = {
     type: 'borderWidth'
     id: string
-    value: string | number
+    value: string
     name: string
 }
 
@@ -275,11 +275,11 @@ export type ThemeShadow = {
 export type ThemeZIndex = {
     type: 'zIndex'
     id: string
-    value: number
+    value: string
 }
 
 export type ThemeValueObject =
-    ThemeSize
+    | ThemeSize
     | ThemeColor
     | ThemeFont
     | ThemeFontWeight
@@ -290,7 +290,7 @@ export type ThemeValueObject =
     | ThemeShadow
 
 export type ThemeValueArray =
-    ThemeBreakpoint
+    | ThemeBreakpoint
     | ThemeSpace
     | ThemeFontSize
     | ThemeLineHeight
@@ -312,7 +312,7 @@ export type ThemeComponent = {
     id: string
     name: typeof componentNames[number]
     styles: {
-        [key in StyleProperty]?: string | number | (string | number)[]
+        [key in StyleProperty]?: string | string[]
     }
 }
 
@@ -322,7 +322,7 @@ export type ThemeVariant = {
     variantType: keyof typeof componentVariantsPropertyMap
     name: string
     styles: {
-        [key in StyleProperty]?: string | number | (string | number)[]
+        [key in StyleProperty]?: string | string[]
     }
 }
 
@@ -351,6 +351,6 @@ export type Theme = {
     zIndices: ThemeZIndex['value'][]
 } & {
     [key in typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]]: {
-        [key in typeof themeSpec[keyof typeof themeSpec][number]]: string | number | (string | number)[]
+        [key in typeof themeSpec[keyof typeof themeSpec][number]]: string | string[]
     }
 }
