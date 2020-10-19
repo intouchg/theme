@@ -210,6 +210,7 @@ export type ThemeFont = {
     value: string
     name: string
     family: string
+    typeface: string
 }
 
 export type ThemeFontSize = {
