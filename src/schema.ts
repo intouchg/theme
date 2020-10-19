@@ -202,7 +202,6 @@ export type ThemeColor = {
     id: string
     value: string
     name: string
-    groups: string[]
 }
 
 export type ThemeFont = {
@@ -210,6 +209,7 @@ export type ThemeFont = {
     id: string
     value: string
     name: string
+    family: string
 }
 
 export type ThemeFontSize = {
@@ -299,14 +299,6 @@ export type ThemeValueArray =
 
 export type ThemeValue = ThemeValueObject | ThemeValueArray
 
-export type ThemeGroup = {
-    type: 'group'
-    id: string
-    groupType: ThemeValueObject['type']
-    name: string
-    members: string[]
-}
-
 export type ThemeComponent = {
     type: 'component'
     id: string
@@ -324,13 +316,6 @@ export type ThemeVariant = {
     styles: {
         [key in StyleProperty]?: string | string[]
     }
-}
-
-export type ThemeSnippet = {
-    type: 'snippet'
-    id: string
-    name: string
-    code: string
 }
 
 export type Theme = {

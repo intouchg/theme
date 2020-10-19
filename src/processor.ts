@@ -1,6 +1,6 @@
 import { createUuid, randomHexColor, makeAvailableName } from '@i/utility'
 import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './schema'
-import type { Theme, ThemeValue, ThemeComponent, ThemeVariant, ThemeGroup, ThemeProperty, StyleProperty } from './schema'
+import type { Theme, ThemeValue, ThemeComponent, ThemeVariant, ThemeProperty, StyleProperty } from './schema'
 
 export const getThemePropertyByStyleProperty = (styleProperty: StyleProperty): ThemeProperty | undefined => {
     const entry = Object.entries(themeSpec).find(([ , styleProperties ]) => 
@@ -92,8 +92,8 @@ const themeValueInitialDefaults = {
     breakpoint: () => ({ value: '60em' }),
     size: () => ({ value: '60px', name: 'New Size' }),
     space: () => ({ value: '32px' }),
-    color: () => ({ value: randomHexColor(), name: 'New Color', groups: [] }),
-    font: () => ({ value: 'Times', name: 'New Font' }),
+    color: () => ({ value: randomHexColor(), name: 'New Color' }),
+    font: () => ({ value: 'Georgia', family: 'Georgia', name: 'New Font' }),
     fontSize: () => ({ value: '1rem' }),
     fontWeight: () => ({ value: '600', name: 'New Font Weight' }),
     lineHeight: () => ({ value: '1rem' }),
@@ -102,15 +102,14 @@ const themeValueInitialDefaults = {
     borderStyle: () => ({ value: 'solid', name: 'New Border Style' }),
     borderWidth: () => ({ value: '2px', name: 'New Border Width' }),
     radius: () => ({ value: '8px', name: 'New Radius' }),
-    shadow: () => ({ value: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)', name: 'New Shadow' }),
+    shadow: () => ({ value: '0 1px 3px rgba(0, 0, 0, 0.12)', name: 'New Shadow' }),
     zIndex: () => ({ value: '10' }),
 }
 
 /**
  * @function createThemeValue
  * @description Creates a new ThemeValue of the given type. Ensures the created
- *      ThemeValue has a unique name amongst its type if it has a name, or a
- *      unique name amongst its ThemeGroup if it has a name and a group.
+ *      ThemeValue has a unique name amongst its type if it has a name.
  * @param {ThemeValue[]} themeValues Array of ThemeValue objects
  * @param {ThemeValue['type']} type ThemeValue type to create
  * @param {Partial<ThemeValue>} props ThemeValue props to use
@@ -128,23 +127,12 @@ export const createThemeValue = <T extends ThemeValue['type']>(
     } as ThemeValue & { type: T }
 
     if (newValue.hasOwnProperty('name')) {
-        const groups: string[] = newValue.hasOwnProperty('groups') ? (newValue as any).groups : []
-        const hasGroups = groups.length > 0
         let unavailableNames: string[] = []
 
         // Get unavailable names from ThemeValues of the same type or group
         themeValues.forEach((value) => {
             if (value.type === type && value.hasOwnProperty('name')) {
-                if (!hasGroups) {
-                    unavailableNames.push((value as any).name)
-                }
-                else if (
-                    hasGroups
-                    && value.hasOwnProperty('groups')
-                    && (value as any).groups.some((id: string) => (newValue as any).groups.includes(id))
-                ) {
-                    unavailableNames.push((value as any).name)
-                }
+                unavailableNames.push((value as any).name)
             }
         });
 
@@ -152,40 +140,6 @@ export const createThemeValue = <T extends ThemeValue['type']>(
     }
 
     return newValue
-}
-
-/**
- * @function createThemeGroup
- * @description Creates a new ThemeGroup of the given groupType. Ensures the
- *      created ThemeGroup has a unique name amongst other ThemeGroups of
- *      its groupType.
- * @param {ThemeGroup[]} themeGroups Array of ThemeGroup objects
- * @param {ThemeGroup['groupType']} type ThemeGroup type to create
- * @param {Partial<ThemeGroup>} props ThemeGroup props to use
- */
-export const createThemeGroup = <T extends ThemeGroup['groupType']>(
-    themeGroups: ThemeGroup[],
-    groupType: T,
-    props: Partial<ThemeGroup> = {},
-): ThemeGroup => {
-    const newGroup = {
-        type: 'group' as const,
-        id: props.id || createUuid(),
-        groupType,
-        name: props.name || 'New Group',
-        members: props.members || [],
-    }
-
-    let unavailableNames: string[] = []
-    themeGroups.forEach((group) => {
-        if (group.groupType === groupType) {
-            unavailableNames.push(group.name)
-        }
-    })
-
-    newGroup.name = makeAvailableName(newGroup.name, unavailableNames)
-
-    return newGroup
 }
 
 /**
