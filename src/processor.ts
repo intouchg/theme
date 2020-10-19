@@ -97,12 +97,12 @@ const themeValueInitialDefaults = {
     fontSize: () => ({ value: '1rem' }),
     fontWeight: () => ({ value: '600', name: 'New Font Weight' }),
     lineHeight: () => ({ value: '1rem' }),
-    letterSpacing: () => ({ value: '0px' }),
+    letterSpacing: () => ({ value: '1px' }),
     border: () => ({ value: '2px solid black', name: 'New Border' }),
     borderStyle: () => ({ value: 'solid', name: 'New Border Style' }),
     borderWidth: () => ({ value: '2px', name: 'New Border Width' }),
     radius: () => ({ value: '8px', name: 'New Radius' }),
-    shadow: () => ({ value: '0 1px 3px rgba(0, 0, 0, 0.12)', name: 'New Shadow' }),
+    shadow: () => ({ value: '0px 1px 3px rgba(0, 0, 0, 0.12)', name: 'New Shadow' }),
     zIndex: () => ({ value: '10' }),
 }
 
