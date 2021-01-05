@@ -32,19 +32,16 @@ const sortThemeValuesAscending = (values: any[]) =>
 
 /**
  * @function themeProcessor
- * @description Converts ThemeValues, ThemeComponents, and ThemeVariants
- *      into a Theme, to be used with `styled-components` `ThemeProvider`
+ * @description Converts ThemeValues and ThemeVariants into a Theme
+ *      that can be used with `styled-components` `ThemeProvider`
  * @param {ThemeValue[]} values Array of ThemeValue objects
- * @param {ThemeComponent[]} components Array of ThemeComponent objects
  * @param {ThemeVariant[]} variants Array of ThemeVariant objects
  */
 export const themeProcessor = ({
     values,
-    components,
     variants,
 }: {
     values: ThemeValue[]
-    components: ThemeComponent[]
     variants: ThemeVariant[]
 }): Theme => {
     if (!values || values.length === 0) throw new Error(`ThemeValues were not passed to the themeProcessor`)
@@ -58,20 +55,6 @@ export const themeProcessor = ({
 
     Object.values(theme).forEach(property => property && sortThemeValuesAscending(Object.values(property)))
 
-    if (components) {
-        components.forEach(({ name, styles }) => {
-            Object.entries(styles).forEach(([ styleProperty, themeValueId ]) => {
-                if (themeValueId === '') return
-                const themeProperty = getThemePropertyByStyleProperty(styleProperty as StyleProperty)
-                if (!themeProperty) throw new Error(`Could not find matching ThemeProperty for StyleProperty "${styleProperty}" in ThemeComponent "${name}"`)
-                const themeValue = values.find((value) => value.id === themeValueId)
-                if (!themeValue) throw new Error(`Could not find ThemeValue with id "${themeValueId}" for StyleProperty "${styleProperty}" in ThemeComponent "${name}"`)
-                if (!theme[themeProperty]) theme[themeProperty] = {} as any
-                assignThemeValue(theme[themeProperty]!, name, { id: 'COMPONENT_STYLE', name: styleProperty, value: themeValue.value })
-            })
-        })
-    }
-
     if (variants) {
         variants.forEach(({ variantType, name, styles }) => {
             Object.entries(styles).forEach(([ styleProperty, themeValueId ]) => {
@@ -80,7 +63,7 @@ export const themeProcessor = ({
                 const themeValue = values.find((value) => value.id === themeValueId)
                 if (!themeValue) throw new Error(`Could not find ThemeValue with id "${themeValueId}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
                 if (!theme[themeProperty]) theme[themeProperty] = {} as any
-                assignThemeValue(theme[themeProperty]!, name, { id: 'COMPONENT_STYLE', name: styleProperty, value: themeValue.value })
+                assignThemeValue(theme[themeProperty]!, name, { id: 'VARIANT_STYLE', name: styleProperty, value: themeValue.value })
             })
         })
     }

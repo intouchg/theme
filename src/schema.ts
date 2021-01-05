@@ -8,7 +8,7 @@ export const defaultVariantName = 'Primary'
 /**
  * @object componentNames
  * @description The names of every `@i/components` component that can
- *      use default styles from the theme.
+ *      use ThemeVariants styles from the theme.
  */
 export const componentNames = [
     'button', 'text', 'heading', 'label', 'link', 'icon', 'input',
