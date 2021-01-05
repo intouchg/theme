@@ -1,6 +1,6 @@
 import { createUuid, randomHexColor, makeAvailableName } from '@i/utility'
 import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './schema'
-import type { Theme, ThemeValue, ThemeComponent, ThemeVariant, ThemeProperty, StyleProperty } from './schema'
+import type { Theme, ThemeValue, ThemeVariant, ThemeProperty, StyleProperty } from './schema'
 
 export const getThemePropertyByStyleProperty = (styleProperty: StyleProperty): ThemeProperty | undefined => {
     const entry = Object.entries(themeSpec).find(([ , styleProperties ]) => 

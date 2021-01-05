@@ -300,15 +300,6 @@ export type ThemeValueArray =
 
 export type ThemeValue = ThemeValueObject | ThemeValueArray
 
-export type ThemeComponent = {
-    type: 'component'
-    id: string
-    name: typeof componentNames[number]
-    styles: {
-        [key in StyleProperty]?: string | string[]
-    }
-}
-
 export type ThemeVariant = {
     type: 'variant'
     id: string
