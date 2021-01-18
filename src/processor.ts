@@ -60,8 +60,6 @@ export const themeProcessor = ({
     values: ThemeValue[]
     variants: ThemeVariant[]
 }): Theme => {
-    if (!values || values.length === 0) throw new Error(`ThemeValues were not passed to the themeProcessor`)
-
     const theme = {} as Theme
 
     // Initialize empty objects for ThemeVariant types
