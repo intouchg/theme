@@ -63,13 +63,13 @@ export const themeProcessor = ({
 }): Theme => {
     const theme = {} as Theme
 
-    // Initialize empty objects for ThemeVariant types
-    Object.values(componentVariantsPropertyMap).forEach((prop) => (theme[prop] = {} as any))
-
     // Initialize empty objects/arrays for ThemeValue types
     Object.entries(themeTypePropertyMap).forEach(([ type, prop ]) => {
         theme[prop] = ((themeValueInitialDefaults as any)[type]().hasOwnProperty('name') ? {} : []) as any
     })
+
+    // Initialize empty objects for ThemeVariant types
+    Object.values(componentVariantsPropertyMap).forEach((prop) => (theme[prop] = {} as any))
 
     values.forEach((value) => assignThemeValue(theme, themeTypePropertyMap[value.type], value))
 
