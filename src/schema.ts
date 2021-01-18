@@ -308,7 +308,7 @@ export type ThemeVariant = {
     variantType: keyof typeof componentVariantsPropertyMap
     name: string
     styles: {
-        [key in StyleProperty]?: ThemeValue['id'] | ThemeValue['id'][]
+        [key in StyleProperty]?: string | string[]
     }
 }
 
@@ -330,7 +330,6 @@ export type Theme = {
     zIndices: ThemeZIndex['value'][]
 } & {
     [key in ComponentVariantProperty]: {
-        // Here, the value of each key is not an id, but an actual CSS value
         [key in StyleProperty]: string | string[]
     }
 }
