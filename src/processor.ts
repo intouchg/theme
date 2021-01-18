@@ -16,73 +16,17 @@ const assignThemeValue = (
     const { name, value, id } = data
 
     if (name) {
-        if (object[key]) object[key][name] = value
-        else object[key] = { [name]: value }
+        object[key][name] = value
     }
     else {
-        if (object[key] && !Array.isArray(object[key])) throw new Error(`Cannot assign ThemeValue with id "${id}" to theme property "${key}", because the ThemeValue does not have a "name" property`)
-        if (object[key]) object[key].push(value)
-        else object[key] = [ value ]
+        if (!Array.isArray(object[key])) throw new Error(`Cannot assign ThemeValue with id "${id}" to theme property "${key}", because the ThemeValue does not have a "name" property`)
+        object[key].push(value)
     }
 }
 
 const sortThemeValuesAscending = (values: any[]) =>
     values.forEach((value) =>
         Array.isArray(value) && value.sort((a: any, b: any) => a - b))
-
-/**
- * @function themeProcessor
- * @description Converts ThemeValues and ThemeVariants into a Theme
- *      that can be used with `styled-components` `ThemeProvider`
- * @param {ThemeValue[]} values Array of ThemeValue objects
- * @param {ThemeVariant[]} variants Array of ThemeVariant objects
- */
-export const themeProcessor = ({
-    values,
-    variants,
-}: {
-    values: ThemeValue[]
-    variants: ThemeVariant[]
-}): Theme => {
-    if (!values || values.length === 0) throw new Error(`ThemeValues were not passed to the themeProcessor`)
-
-    const theme = {} as Partial<Theme>
-
-    values.forEach((value) => {
-        const themeProperty = themeTypePropertyMap[value.type]
-        assignThemeValue(theme, themeProperty, value)
-    })
-
-    Object.values(theme).forEach(property => property && sortThemeValuesAscending(Object.values(property)))
-
-    if (variants) {
-        variants.forEach(({ variantType, name, styles }) => {
-            Object.entries(styles).forEach(([ styleProperty, styleValue ]) => {
-                if (!styleValue) return
-                const themeProperty = componentVariantsPropertyMap[variantType]
-                if (!theme[themeProperty]) theme[themeProperty] = {} as any
-                let value: string | string[] = ''
-
-                if (typeof styleValue === 'string') {
-                    const themeValue = values.find((value) => value.id === styleValue)
-                    if (!themeValue && UUID_REGEX.test(styleValue)) throw new Error(`Could not find ThemeValue with id "${styleValue}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
-                    value = themeValue ? themeValue.value : styleValue
-                }
-                else {
-                    value = styleValue.map((string) => {
-                        const themeValue = values.find((value) => value.id === string)
-                        if (!themeValue && UUID_REGEX.test(string)) throw new Error(`Could not find ThemeValue with id "${string}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
-                        return themeValue ? themeValue.value : string
-                    })
-                }                
-                
-                assignThemeValue(theme[themeProperty]!, name, { id: 'VARIANT_STYLE', name: styleProperty, value })
-            })
-        })
-    }
-
-    return theme as Theme
-}
 
 const themeValueInitialDefaults = {
     breakpoint: () => ({ value: '60em' }),
@@ -100,6 +44,67 @@ const themeValueInitialDefaults = {
     radius: () => ({ value: '8px', name: 'New Radius' }),
     shadow: () => ({ value: '0px 1px 3px rgba(0, 0, 0, 0.12)', name: 'New Shadow' }),
     zIndex: () => ({ value: '10' }),
+}
+
+/**
+ * @function themeProcessor
+ * @description Converts ThemeValues and ThemeVariants into a Theme
+ *      that can be used with `styled-components` `ThemeProvider`
+ * @param {ThemeValue[]} values Array of ThemeValue objects
+ * @param {ThemeVariant[]} variants Array of ThemeVariant objects
+ */
+export const themeProcessor = ({
+    values,
+    variants,
+}: {
+    values: ThemeValue[]
+    variants: ThemeVariant[]
+}): Theme => {
+    if (!values || values.length === 0) throw new Error(`ThemeValues were not passed to the themeProcessor`)
+
+    const theme = {} as Theme
+
+    // Initialize empty objects for ThemeVariant types
+    Object.values(componentVariantsPropertyMap).forEach((prop) => (theme[prop] = {} as any))
+
+    // Initialize empty objects/arrays for ThemeValue types
+    Object.entries(themeTypePropertyMap).forEach(([ type, prop ]) => {
+        theme[prop] = ((themeValueInitialDefaults as any)[type]().hasOwnProperty('name') ? {} : []) as any
+    })
+
+    values.forEach((value) => assignThemeValue(theme, themeTypePropertyMap[value.type], value))
+
+    Object.values(theme).forEach(property => property && sortThemeValuesAscending(Object.values(property)))
+
+    if (variants) {
+        variants.forEach(({ variantType, name, styles }) => {
+            Object.entries(styles).forEach(([ styleProperty, styleValue ]) => {
+                if (!styleValue) return
+                let value: string | string[] = ''
+
+                if (typeof styleValue === 'string') {
+                    const themeValue = values.find((value) => value.id === styleValue)
+                    if (!themeValue && UUID_REGEX.test(styleValue)) throw new Error(`Could not find ThemeValue with id "${styleValue}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
+                    value = themeValue ? themeValue.value : styleValue
+                }
+                else {
+                    value = styleValue.map((string) => {
+                        const themeValue = values.find((value) => value.id === string)
+                        if (!themeValue && UUID_REGEX.test(string)) throw new Error(`Could not find ThemeValue with id "${string}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
+                        return themeValue ? themeValue.value : string
+                    })
+                }                
+                
+                assignThemeValue(
+                    theme[componentVariantsPropertyMap[variantType]]!,
+                    name,
+                    { id: 'VARIANT_STYLE', name: styleProperty, value },
+                )
+            })
+        })
+    }
+
+    return theme as Theme
 }
 
 /**
