@@ -16,7 +16,8 @@ const assignThemeValue = (
     const { name, value, id } = data
 
     if (name) {
-        object[key][name] = value
+        if (object[key]) object[key][name] = value
+        else object[key] = { [name]: value }
     }
     else {
         if (!Array.isArray(object[key])) throw new Error(`Cannot assign ThemeValue with id "${id}" to theme property "${key}", because the ThemeValue does not have a "name" property`)
