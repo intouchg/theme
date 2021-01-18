@@ -175,6 +175,8 @@ export const componentVariantsPropertyMap = {
     input: 'inputs',
 } as const
 
+type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
+
 export type ThemeProperty = keyof typeof themeSpec
 export type StyleProperty = typeof themeSpec[keyof typeof themeSpec][number]
 
@@ -306,7 +308,7 @@ export type ThemeVariant = {
     variantType: keyof typeof componentVariantsPropertyMap
     name: string
     styles: {
-        [key in StyleProperty]?: string | string[]
+        [key in StyleProperty]?: ThemeValue['id'] | ThemeValue['id'][]
     }
 }
 
@@ -327,7 +329,8 @@ export type Theme = {
     shadows: { [key in ThemeShadow['name']]: ThemeShadow['value'] }
     zIndices: ThemeZIndex['value'][]
 } & {
-    [key in typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]]: {
-        [key in typeof themeSpec[keyof typeof themeSpec][number]]: string | string[]
+    [key in ComponentVariantProperty]: {
+        // Here, the value of each key is not an id, but an actual CSS value
+        [key in StyleProperty]: string | string[]
     }
 }
