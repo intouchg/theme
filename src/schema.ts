@@ -175,7 +175,7 @@ export const componentVariantsPropertyMap = {
     input: 'inputs',
 } as const
 
-type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
+export type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
 
 export type ThemeProperty = keyof typeof themeSpec
 export type StyleProperty = typeof themeSpec[keyof typeof themeSpec][number]
