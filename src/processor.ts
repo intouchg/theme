@@ -1,4 +1,4 @@
-import { createUuid, randomHexColor, makeAvailableName } from '@i/utility'
+import { createUuid, randomHexColor, makeAvailableName, UUID_REGEX } from '@i/utility'
 import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './schema'
 import type { Theme, ThemeValue, ThemeVariant, ThemeProperty, StyleProperty } from './schema'
 
@@ -57,13 +57,26 @@ export const themeProcessor = ({
 
     if (variants) {
         variants.forEach(({ variantType, name, styles }) => {
-            Object.entries(styles).forEach(([ styleProperty, themeValueId ]) => {
-                if (themeValueId === '') return
+            Object.entries(styles).forEach(([ styleProperty, styleValue ]) => {
+                if (!styleValue) return
                 const themeProperty = componentVariantsPropertyMap[variantType]
-                const themeValue = values.find((value) => value.id === themeValueId)
-                if (!themeValue) throw new Error(`Could not find ThemeValue with id "${themeValueId}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
                 if (!theme[themeProperty]) theme[themeProperty] = {} as any
-                assignThemeValue(theme[themeProperty]!, name, { id: 'VARIANT_STYLE', name: styleProperty, value: themeValue.value })
+                let value: string | string[] = ''
+
+                if (typeof styleValue === 'string') {
+                    const themeValue = values.find((value) => value.id === styleValue)
+                    if (!themeValue && UUID_REGEX.test(styleValue)) throw new Error(`Could not find ThemeValue with id "${styleValue}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
+                    value = themeValue ? themeValue.value : styleValue
+                }
+                else {
+                    value = styleValue.map((string) => {
+                        const themeValue = values.find((value) => value.id === string)
+                        if (!themeValue && UUID_REGEX.test(string)) throw new Error(`Could not find ThemeValue with id "${string}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
+                        return themeValue ? themeValue.value : string
+                    })
+                }                
+                
+                assignThemeValue(theme[themeProperty]!, name, { id: 'VARIANT_STYLE', name: styleProperty, value })
             })
         })
     }
