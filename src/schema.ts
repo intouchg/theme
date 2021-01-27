@@ -11,7 +11,7 @@ export const defaultVariantName = 'Primary'
  *      use ThemeVariants styles from the theme.
  */
 export const componentNames = [
-    'button', 'text', 'heading', 'label', 'link', 'icon', 'input',
+    'button', 'text', 'heading', 'label', 'link', 'icon', 'input', 'radio', 'checkbox', 'select',
 ] as const
 
 /**
@@ -173,6 +173,9 @@ export const componentVariantsPropertyMap = {
     link: 'links',
     icon: 'icons',
     input: 'inputs',
+    radio: 'radios',
+    checkbox: 'checkboxes',
+    select: 'selects',
 } as const
 
 export type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
