@@ -42,7 +42,11 @@ export const customThemeProps = {
         'visitedColor',
         'visitedBackgroundColor',
         'visitedBorderColor',
+        'focusColor',
+        'focusBackgroundColor',
+        'focusBorderColor',
         'fill',
+        'stroke',
     ],
 } as const
 
