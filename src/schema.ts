@@ -50,6 +50,30 @@ export const customThemeProps = {
     ],
 } as const
 
+const themePositionProps = [
+    'top', 'right', 'bottom', 'left',
+] as const
+
+const themeMarginProps = [
+    'margin', 'm',
+    'marginTop', 'mt',
+    'marginRight', 'mr',
+    'marginBottom', 'mb',
+    'marginLeft', 'ml',
+    'marginX', 'mx',
+    'marginY', 'my',
+] as const
+
+const themePaddingProps = [
+    'padding', 'p',
+    'paddingTop', 'pt',
+    'paddingRight', 'pr',
+    'paddingBottom', 'pb',
+    'paddingLeft', 'pl',
+    'paddingX', 'px',
+    'paddingY', 'py',
+] as const
+
 /**
  * @object themeSpec
  * @description This object represents all possible theme property names, 
@@ -59,21 +83,9 @@ export const customThemeProps = {
 export const themeSpec = {
     breakpoints: [],
     space: [
-        'top', 'right', 'bottom', 'left',
-        'margin', 'm',
-        'marginTop', 'mt',
-        'marginRight', 'mr',
-        'marginBottom', 'mb',
-        'marginLeft', 'ml',
-        'marginX', 'mx',
-        'marginY', 'my',
-        'padding', 'p',
-        'paddingTop', 'pt',
-        'paddingRight', 'pr',
-        'paddingBottom', 'pb',
-        'paddingLeft', 'pl',
-        'paddingX', 'px',
-        'paddingY', 'py',
+        ...themePositionProps,
+        ...themeMarginProps,
+        ...themePaddingProps,
         'gridGap', 'gridColumnGap', 'gridRowGap',
     ],
     fontSizes: [
