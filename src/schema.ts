@@ -50,11 +50,11 @@ export const customThemeProps = {
     ],
 } as const
 
-const themePositionProps = [
+export const themePositionProps = [
     'top', 'right', 'bottom', 'left',
 ] as const
 
-const themeMarginProps = [
+export const themeMarginProps = [
     'margin', 'm',
     'marginTop', 'mt',
     'marginRight', 'mr',
@@ -64,7 +64,7 @@ const themeMarginProps = [
     'marginY', 'my',
 ] as const
 
-const themePaddingProps = [
+export const themePaddingProps = [
     'padding', 'p',
     'paddingTop', 'pt',
     'paddingRight', 'pr',
