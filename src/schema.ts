@@ -6,15 +6,6 @@
 export const defaultVariantName = 'Primary'
 
 /**
- * @object componentNames
- * @description The names of every `@i/components` component that can
- *      use ThemeVariants styles from the theme.
- */
-export const componentNames = [
-    'button', 'text', 'heading', 'label', 'link', 'icon', 'input', 'radio', 'checkbox', 'select',
-] as const
-
-/**
  * @object customThemeProps
  * @description The keys of this object are theme property names, and the 
  *      value assigned to each key is an array of custom style property 
@@ -28,23 +19,11 @@ export const componentNames = [
  *     red: '#FF0000',
  *   },
  * }
- * <Button hoverColor="red">
+ * <Button stroke="red">
  * ```
  */
 export const customThemeProps = {
     colors: [
-        'hoverColor',
-        'hoverBackgroundColor',
-        'hoverBorderColor',
-        'activeColor',
-        'activeBackgroundColor',
-        'activeBorderColor',
-        'visitedColor',
-        'visitedBackgroundColor',
-        'visitedBorderColor',
-        'focusColor',
-        'focusBackgroundColor',
-        'focusBorderColor',
         'fill',
         'stroke',
     ],
@@ -72,6 +51,33 @@ export const themePaddingProps = [
     'paddingLeft', 'pl',
     'paddingX', 'px',
     'paddingY', 'py',
+] as const
+
+export const themeBorderProps = [
+    'border',
+    'borderTop',   
+    'borderRight',   
+    'borderBottom',   
+    'borderLeft',   
+    'borderX', 'borderY',
+    'borderWidth',
+    'borderTopWidth',
+    'borderRightWidth',
+    'borderBottomWidth',
+    'borderLeftWidth',
+    'borderStyle',
+    'borderTopStyle',
+    'borderRightStyle',
+    'borderBottomStyle',
+    'borderLeftStyle',
+    'borderColor',
+    'borderTopColor',
+    'borderRightColor',
+    'borderBottomColor',
+    'borderLeftColor',
+    'borderRadius',
+    'borderTopLeftRadius', 'borderTopRightRadius',
+    'borderBottomLeftRadius', 'borderBottomRightRadius',
 ] as const
 
 /**
