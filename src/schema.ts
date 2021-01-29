@@ -218,6 +218,8 @@ export const componentVariantsPropertyMap = {
     radio: 'radios',
     checkbox: 'checkboxes',
     select: 'selects',
+    slider: 'sliders',
+    toggle: 'toggles',
 } as const
 
 export type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
