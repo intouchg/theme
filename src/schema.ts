@@ -29,11 +29,11 @@ export const customThemeProps = {
     ],
 } as const
 
-export const themePositionProps = [
+export const positionProps = [
     'top', 'right', 'bottom', 'left',
 ] as const
 
-export const themeMarginProps = [
+export const marginProps = [
     'margin', 'm',
     'marginTop', 'mt',
     'marginRight', 'mr',
@@ -43,7 +43,7 @@ export const themeMarginProps = [
     'marginY', 'my',
 ] as const
 
-export const themePaddingProps = [
+export const paddingProps = [
     'padding', 'p',
     'paddingTop', 'pt',
     'paddingRight', 'pr',
@@ -53,7 +53,7 @@ export const themePaddingProps = [
     'paddingY', 'py',
 ] as const
 
-export const themeBorderProps = [
+export const borderProps = [
     'border',
     'borderTop',   
     'borderRight',   
@@ -80,6 +80,26 @@ export const themeBorderProps = [
     'borderBottomLeftRadius', 'borderBottomRightRadius',
 ] as const
 
+export const backgroundProps = [
+    'bg', 'backgroundColor',
+    'backgroundImage',
+    'backgroundSize',
+    'backgroundPosition',
+    'backgroundRepeat',
+] as const
+
+export const shadowProps = [
+    'boxShadow', 'textShadow',
+] as const
+
+export const fontProps = [
+    'fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing',
+] as const
+
+export const textProps = [
+    'textDecoration', 'textTransform',
+] as const
+
 /**
  * @object themeSpec
  * @description This object represents all possible theme property names, 
@@ -89,9 +109,9 @@ export const themeBorderProps = [
 export const themeSpec = {
     breakpoints: [],
     space: [
-        ...themePositionProps,
-        ...themeMarginProps,
-        ...themePaddingProps,
+        ...positionProps,
+        ...marginProps,
+        ...paddingProps,
         'gridGap', 'gridColumnGap', 'gridRowGap',
     ],
     fontSizes: [
@@ -152,7 +172,7 @@ export const themeSpec = {
         'borderBottomLeftRadius', 'borderBottomRightRadius',
     ],
     shadows: [
-        'textShadow', 'boxShadow',
+        ...shadowProps,
     ],
     zIndices: [
         'zIndex', 
