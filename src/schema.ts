@@ -220,6 +220,7 @@ export const componentVariantsPropertyMap = {
     select: 'selects',
     slider: 'sliders',
     toggle: 'toggles',
+    textarea: 'textareas',
 } as const
 
 export type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
