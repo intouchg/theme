@@ -16,6 +16,7 @@ export const configFilename = '.idsconfig.json'
 export type Config = {
     values?: string
     variants?: string
+    icons?: string
     output?: string
 }
 
@@ -36,6 +37,7 @@ export const validateConfig = (config: Config) => {
 
     validate('values')
     validate('variants')
+    validate('icons')
     validate('output')
 
     if (isValid) {
