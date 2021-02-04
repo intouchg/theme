@@ -204,8 +204,7 @@ export const themeTypePropertyMap = {
 
 /**
  * @object componentVariantsPropertyMap
- * @description This object maps string literal types from componentNames[number]
- *      to theme variant property names.
+ * @description This object maps component names to theme variant property names.
  */
 export const componentVariantsPropertyMap = {
     button: 'buttons',

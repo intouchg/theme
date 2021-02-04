@@ -7,25 +7,33 @@
  */
 export const configFilename = '.idsconfig.json'
 
-
 /**
  * @type Config
  * @description The properties that are expected to be in a valid
  *      config file. The value of each property should be a filepath.
  */
 export type Config = {
-    values?: string
-    variants?: string
+    values: string
+    variants: string
+    output: string
+}
+
+/**
+ * @type OptionalConfig
+ * @description The optional properties that may be in a valid
+ *      config file. The value of each property should be a filepath.
+ */
+export type OptionalConfig = {
+    entry?: string
     icons?: string
-    output?: string
 }
 
 /**
  * @function validateConfig
- * @description Takes an object from a Config file. Returns the
+ * @description Takes Config file data and returns the
  *      config object if it is valid, or false if it is invalid.
  */
-export const validateConfig = (config: Config) => {
+export const validateConfig = (config: Partial<Config>) => {
     let isValid = true
 
     const validate = (propertyName: keyof Config) => {
@@ -37,11 +45,10 @@ export const validateConfig = (config: Config) => {
 
     validate('values')
     validate('variants')
-    validate('icons')
     validate('output')
 
     if (isValid) {
-        return config as Required<Config>
+        return config as Config
     }
     
     return false
