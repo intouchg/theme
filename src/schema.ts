@@ -364,15 +364,15 @@ export type Theme = {
     space: ThemeSpace['value'][] 
     fonts: { [key in ThemeFont['name']]: ThemeFont['value'] }
     fontSizes: ThemeFontSize['value'][] 
-    fontWeights: { [key in ThemeFontWeight['name']]: ThemeFontWeight['value'] }
+    fontWeights: ThemeFontWeight['value'][]
     lineHeights: ThemeLineHeight['value'][] 
     letterSpacings: ThemeLetterSpacing['value'][] 
     colors: { [key in ThemeColor['name']]: ThemeColor['value'] | Theme['colors'] }
-    sizes: { [key in ThemeSize['name']]: ThemeSize['value'] }
+    sizes: ThemeSize['value'][]
     borders: { [key in ThemeBorder['name']]: ThemeBorder['value'] }
-    borderWidths: { [key in ThemeBorderWidth['name']]: ThemeBorderWidth['value'] }
-    borderStyles: { [key in ThemeBorderStyle['name']]: ThemeBorderStyle['value'] }
-    radii: { [key in ThemeRadius['name']]: ThemeRadius['value'] }
+    borderWidths: ThemeBorderWidth['value'][]
+    borderStyles: ThemeBorderStyle['value'][]
+    radii: ThemeRadius['value'][]
     shadows: { [key in ThemeShadow['name']]: ThemeShadow['value'] }
     zIndices: ThemeZIndex['value'][]
 } & {
