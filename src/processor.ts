@@ -37,13 +37,13 @@ const themeValueInitialDefaults = {
     font: () => ({ value: 'Georgia', family: 'Georgia', typeface: 'Georgia', name: 'Georgia' }),
     fontSize: () => ({ value: '1rem' }),
     fontWeight: () => ({ value: '600' }),
-    lineHeight: () => ({ value: '1rem' }),
+    lineHeight: () => ({ value: '1' }),
     letterSpacing: () => ({ value: '1px' }),
     border: () => ({ value: '1px solid black', name: 'New Border' }),
     borderStyle: () => ({ value: 'solid' }),
     borderWidth: () => ({ value: '1px' }),
     radius: () => ({ value: '8px' }),
-    shadow: () => ({ value: '0px 1px 3px rgba(0, 0, 0, 0.12)', name: 'New Shadow' }),
+    shadow: () => ({ value: '0px 1px 3px rgba(0, 0, 0, 10%)', name: 'New Shadow' }),
     zIndex: () => ({ value: '10' }),
 }
 
