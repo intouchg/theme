@@ -29,6 +29,12 @@ export const customThemeProps = {
     ],
 } as const
 
+
+/*
+    These props are seperated out so they can be used for filtering
+    style props in styled-components. Some of them are included in
+    themeSpec to avoid maintaining them in two seperate places.
+*/
 export const positionProps = [
     'top', 'right', 'bottom', 'left',
 ] as const
@@ -225,7 +231,13 @@ export const componentVariantsPropertyMap = {
 export type ComponentVariantProperty = typeof componentVariantsPropertyMap[keyof typeof componentVariantsPropertyMap]
 
 export type ThemeProperty = keyof typeof themeSpec
-export type StyleProperty = typeof themeSpec[keyof typeof themeSpec][number]
+export type ThemeStyleProperty = typeof themeSpec[keyof typeof themeSpec][number]
+export type StyleProperty =
+    | ThemeStyleProperty
+    | typeof borderProps[number]
+    | typeof backgroundProps[number]
+    | typeof fontProps[number]
+    | typeof textProps[number]
 
 export type ThemeBreakpoint = {
     type: 'breakpoint'
