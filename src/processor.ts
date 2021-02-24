@@ -1,6 +1,6 @@
 import { createUuid, randomHexColor, makeAvailableName, UUID_REGEX } from '@i/utility'
 import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './schema'
-import type { Theme, ThemeValue, ThemeVariant, ThemeProperty, StyleProperty } from './schema'
+import type { Theme, ThemeValue, ThemeVariant, ThemeProperty, StyleProperty, SelectorProperty, ThemeStyleObject } from './schema'
 
 export const getThemePropertyByStyleProperty = (styleProperty: StyleProperty): ThemeProperty | undefined => {
     const entry = Object.entries(themeSpec).find(([ , styleProperties ]) => 
@@ -45,6 +45,34 @@ const themeValueInitialDefaults = {
     radius: () => ({ value: '8px' }),
     shadow: () => ({ value: '0px 1px 3px rgba(0, 0, 0, 10%)', name: 'New Shadow' }),
     zIndex: () => ({ value: '10' }),
+}
+
+const findThemeValueError = (
+    valueId: string,
+    styleProperty: string,
+    variantName: string,
+    variantType: string
+) => new Error(`Could not find ThemeValue with id "${valueId}" for StyleProperty "${styleProperty}" in ThemeVariant "${variantName}" for variants type "${variantType}"`)
+
+const findThemeValue = (
+    styleValue: string | string[],
+    values: ThemeValue[],
+    styleProperty: string,
+    variantName: string,
+    variantType: string,
+) => {
+    if (typeof styleValue === 'string') {
+        const themeValue = values.find((value) => value.id === styleValue)
+        if (!themeValue && UUID_REGEX.test(styleValue)) throw findThemeValueError(styleValue, styleProperty, variantName, variantType)
+        return themeValue ? themeValue.value : styleValue
+    }
+    else {
+        return styleValue.map((string) => {
+            const themeValue = values.find((value) => value.id === string)
+            if (!themeValue && UUID_REGEX.test(string)) throw findThemeValueError(string, styleProperty, variantName, variantType)
+            return themeValue ? themeValue.value : string
+        })
+    }
 }
 
 /**
@@ -98,27 +126,26 @@ export const themeProcessor = ({
     Object.values(theme).forEach(property => property && sortThemeValuesAscending(Object.values(property)))
 
     if (variants) {
-        variants.forEach(({ variantType, name, styles }) => {
+        variants.forEach(({ variantType, name: variantName, styles }) => {
+            let themeTargetReference = theme[componentVariantsPropertyMap[variantType]]!
+
             Object.entries(styles).forEach(([ styleProperty, styleValue ]) => {
                 if (!styleValue) return
-                let value: string | string[] = ''
+                let value: string | string[] | ThemeStyleObject = ''
 
-                if (typeof styleValue === 'string') {
-                    const themeValue = values.find((value) => value.id === styleValue)
-                    if (!themeValue && UUID_REGEX.test(styleValue)) throw new Error(`Could not find ThemeValue with id "${styleValue}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
-                    value = themeValue ? themeValue.value : styleValue
+                if (typeof styleValue === 'string' || Array.isArray(styleValue)) {
+                    value = findThemeValue(styleValue, values, styleProperty, variantName, variantType)
                 }
-                else {
-                    value = styleValue.map((string) => {
-                        const themeValue = values.find((value) => value.id === string)
-                        if (!themeValue && UUID_REGEX.test(string)) throw new Error(`Could not find ThemeValue with id "${string}" for StyleProperty "${styleProperty}" in ThemeVariant "${name}" for variants type "${variantType}"`)
-                        return themeValue ? themeValue.value : string
+                else if (typeof styleValue === 'object') {
+                    value = {}
+                    Object.entries(styleValue).forEach(([ styleProperty, styleValue ]) => {
+                        (value as ThemeStyleObject)[styleProperty as StyleProperty] = findThemeValue(styleValue!, values, styleProperty, variantName, variantType)
                     })
-                }                
-                
+                }
+
                 assignThemeValue(
-                    theme[componentVariantsPropertyMap[variantType]]!,
-                    name,
+                    themeTargetReference,
+                    variantName,
                     { id: 'VARIANT_STYLE', name: styleProperty, value },
                 )
             })

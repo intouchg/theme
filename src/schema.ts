@@ -238,6 +238,14 @@ export type StyleProperty =
     | typeof backgroundProps[number]
     | typeof fontProps[number]
     | typeof textProps[number]
+export type SelectorProperty =
+    | '&:hover'
+    | '&:active'
+    | '&:disabled'
+    | '&:checked'
+    | '&:visited'
+export type ThemeStyleObject = { [key in StyleProperty]?: string | string[] }
+export type ThemeSelectorObject = { [key in SelectorProperty]?: ThemeStyleObject }
 
 export type ThemeBreakpoint = {
     type: 'breakpoint'
@@ -366,9 +374,7 @@ export type ThemeVariant = {
     id: string
     variantType: keyof typeof componentVariantsPropertyMap
     name: string
-    styles: {
-        [key in StyleProperty]?: string | string[]
-    }
+    styles: ThemeStyleObject & ThemeSelectorObject
 }
 
 export type Theme = {
@@ -389,8 +395,6 @@ export type Theme = {
     zIndices: ThemeZIndex['value'][]
 } & {
     [key in ComponentVariantProperty]: {
-        [variantName: string]: {
-            [key in StyleProperty]?: string | string[]
-        }
+        [variantName: string]: ThemeStyleObject & ThemeSelectorObject
     }
 }
