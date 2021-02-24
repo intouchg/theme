@@ -341,22 +341,22 @@ export type ThemeZIndex = {
 }
 
 export type ThemeValueObject =
-    | ThemeSize
     | ThemeColor
     | ThemeFont
-    | ThemeFontWeight
     | ThemeBorder
-    | ThemeBorderStyle
-    | ThemeBorderWidth
-    | ThemeRadius
     | ThemeShadow
 
 export type ThemeValueArray =
     | ThemeBreakpoint
     | ThemeSpace
+    | ThemeSize
     | ThemeFontSize
+    | ThemeFontWeight
     | ThemeLineHeight
     | ThemeLetterSpacing
+    | ThemeBorderStyle
+    | ThemeBorderWidth
+    | ThemeRadius
     | ThemeZIndex
 
 export type ThemeValue = ThemeValueObject | ThemeValueArray
@@ -389,6 +389,8 @@ export type Theme = {
     zIndices: ThemeZIndex['value'][]
 } & {
     [key in ComponentVariantProperty]: {
-        [key in StyleProperty]: string | string[]
+        [variantName: string]: {
+            [key in StyleProperty]?: string | string[]
+        }
     }
 }

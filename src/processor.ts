@@ -61,15 +61,37 @@ export const themeProcessor = ({
     values: ThemeValue[]
     variants: ThemeVariant[]
 }): Theme => {
-    const theme = {} as Theme
+    const theme: Theme = {
+        breakpoints: [],
+        space: [ '0' ],
+        fontSizes: [ '0' ],
+        fonts: {},
+        fontWeights: [ '0' ],
+        lineHeights: [ '0' ],
+        letterSpacings: [ '0' ],
+        colors: {},
+        sizes: [ '0' ],
+        borders: {},
+        borderWidths: [ '0' ],
+        borderStyles: [ 'none', 'solid' ],
+        radii: [ '0' ],
+        shadows: {},
+        zIndices: [ '0' ],
 
-    // Initialize empty objects/arrays for ThemeValue types
-    Object.entries(themeTypePropertyMap).forEach(([ type, prop ]) => {
-        theme[prop] = ((themeValueInitialDefaults as any)[type]().hasOwnProperty('name') ? {} : []) as any
-    })
-
-    // Initialize empty objects for ThemeVariant types
-    Object.values(componentVariantsPropertyMap).forEach((prop) => (theme[prop] = {} as any))
+        buttons: {},
+        texts: {},
+        headings: {},
+        links: {},
+        icons: {},
+        labels: {},
+        inputs: {},
+        radios: {},
+        checkboxes: {},
+        selects: {},
+        sliders: {},
+        toggles: {},
+        textareas: {},
+    }
 
     values.forEach((value) => assignThemeValue(theme, themeTypePropertyMap[value.type], value))
 
