@@ -108,6 +108,7 @@ export const themeProcessor = ({
 
         buttons: {},
         texts: {},
+        paragraphs: {},
         headings: {},
         links: {},
         icons: {},

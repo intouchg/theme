@@ -215,6 +215,7 @@ export const themeTypePropertyMap = {
 export const componentVariantsPropertyMap = {
     button: 'buttons',
     text: 'texts',
+    paragraph: 'paragraphs',
     heading: 'headings',
     link: 'links',
     icon: 'icons',
