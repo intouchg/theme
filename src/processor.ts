@@ -25,9 +25,25 @@ const assignThemeValue = (
     }
 }
 
-const sortThemeValuesAscending = (values: any[]) =>
-    values.forEach((value) =>
-        Array.isArray(value) && value.sort((a: any, b: any) => a - b))
+const getNumericPixelValue = (value: string | number) => {
+    if (typeof value === 'number') {
+        return value
+    }
+    else if (value.includes('px')) {
+        return Number(value.split('px')[0])
+    }
+    else if (value.includes('rem')) {
+        return Number(value.split('rem')[0])
+    }
+    else if (value.includes('em')) {
+        return Number(value.split('em')[0])
+    }
+    else {
+        return Number(value)
+    }
+}
+
+const sortValueScaleAscending = (a: string | number, b: string | number) => getNumericPixelValue(a) - getNumericPixelValue(b)
 
 const themeValueInitialDefaults = {
     breakpoint: () => ({ value: '60em' }),
@@ -124,7 +140,11 @@ export const themeProcessor = ({
 
     values.forEach((value) => assignThemeValue(theme, themeTypePropertyMap[value.type], value))
 
-    Object.values(theme).forEach(property => property && sortThemeValuesAscending(Object.values(property)))
+    Object.entries(theme).forEach(([ property, value ]) => {
+        if (themeSpec.hasOwnProperty(property) && Array.isArray(value)) {
+            value.sort(sortValueScaleAscending)
+        }
+    })
 
     if (variants) {
         variants.forEach(({ variantType, name: variantName, styles }) => {
