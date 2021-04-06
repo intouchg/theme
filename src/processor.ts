@@ -140,11 +140,7 @@ export const themeProcessor = ({
 
     values.forEach((value) => assignThemeValue(theme, themeTypePropertyMap[value.type], value))
 
-    Object.entries(theme).forEach(([ property, value ]) => {
-        if (themeSpec.hasOwnProperty(property) && Array.isArray(value)) {
-            value.sort(sortValueScaleAscending)
-        }
-    })
+    theme.breakpoints.sort(sortValueScaleAscending)
 
     if (variants) {
         variants.forEach(({ variantType, name: variantName, styles }) => {
