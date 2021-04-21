@@ -150,6 +150,8 @@ export const themeProcessor = ({
         variants.forEach(({ variantType, name: variantName, styles }) => {
             let themeTargetReference = theme[componentVariantsPropertyMap[variantType]]!
 
+            themeTargetReference[variantName] = {}
+
             Object.entries(styles).forEach(([ styleProperty, styleValue ]) => {
                 if (!styleValue) return
                 let value: string | string[] | ThemeStyleObject = ''
