@@ -218,6 +218,7 @@ export const componentVariantsPropertyMap = {
     paragraph: 'paragraphs',
     heading: 'headings',
     link: 'links',
+    list: 'lists',
     icon: 'icons',
     label: 'labels',
     input: 'inputs',
