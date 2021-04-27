@@ -128,6 +128,7 @@ export const themeProcessor = ({
         headings: {},
         links: {},
         lists: {},
+        listItems: {},
         icons: {},
         labels: {},
         inputs: {},
