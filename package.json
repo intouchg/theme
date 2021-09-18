@@ -1,13 +1,13 @@
 {
   "name": "@i/theme",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "description": "Theme tools and schemas for the Intouch Design System",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "repository": "https://intazdoweb.intouchsol.com/IntouchDesignSystem/IntouchDesignSystem/_git/theme",
   "author": "Intouch Group",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "sideEffects": false,
   "scripts": {
     "prebuild": "rimraf dist && npm run typegen",
