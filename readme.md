@@ -1,6 +1,6 @@
-# @i/theme
+# @intouchg/theme
 
-Theme tools and schemas for the Intouch Design System
+Theme tools and schemas for the [Intouch Design System](https://ids.intouchg.co/)
 
 
 ### Architecture

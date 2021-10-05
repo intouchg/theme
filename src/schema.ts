@@ -1,7 +1,7 @@
 /**
  * @string defaultVariantName
  * @description The name of the default variant that will be applied
- *      to every content component in `@i/components` via defaultProps.
+ *      to every content component in `@intouchg/components` via defaultProps.
  */
 export const defaultVariantName = 'Primary'
 
@@ -9,7 +9,7 @@ export const defaultVariantName = 'Primary'
  * @object customThemeProps
  * @description The keys of this object are theme property names, and the 
  *      value assigned to each key is an array of custom style property 
- *      names. Each custom style property can be applied to `@i/components`,
+ *      names. Each custom style property can be applied to `@intouchg/components`,
  *      and can access the values from the corresponding theme property.
  * @example
  * 

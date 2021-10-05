@@ -1,4 +1,4 @@
-import { createUuid, randomHexColor, makeAvailableName, UUID_REGEX } from '@i/utility'
+import { createUuid, randomHexColor, makeAvailableName, UUID_REGEX } from '@intouchg/utility'
 import { themeSpec, themeTypePropertyMap, componentVariantsPropertyMap } from './schema'
 import type { Theme, ThemeValue, ThemeVariant, ThemeProperty, StyleProperty, SelectorProperty, ThemeStyleObject } from './schema'
 
