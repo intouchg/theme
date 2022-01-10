@@ -1,11 +1,11 @@
 {
   "name": "@intouchg/theme",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Theme tools and schemas for the Intouch Design System",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "repository": "https://intazdoweb.intouchsol.com/IntouchDesignSystem/IntouchDesignSystem/_git/theme",
+  "repository": "https://github.com/intouchg/theme",
   "author": "Intouch Group",
   "license": "MIT",
   "sideEffects": false,
